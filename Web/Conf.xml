@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <!-- 是否调试模式，1:是 -->
+  <add key="IsDebugMode" value="0" />
+  <!-- 系统内部通讯签名密钥 -->
+  <add key="InternalSignKey" value="@PpC5B1*#7Xrr0bx*t^zEAuJhY9Uk$hK" />
+  <!-- AES密钥 -->
+  <add key="AesKey" value="66D3C4EB7BD94AC6A30AEEE92D90EBE9" />
+  <!-- HttpClient TaskWait -->
+  <add key="HttpClient_TaskWait" value="20" />
+</settings>
