@@ -2,15 +2,80 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Web.Http;
 using System.Web.Routing;
 using System.Web.Security;
+using WebHook.Utility;
+using WebHook.Utility.Extension;
 
 namespace WebHook.Controllers
 {
     public abstract class BaseController : ApiController
     {
+        /// <summary>
+        /// 通用响应方法
+        /// </summary>
+        /// <param name="response"></param>
+        /// <param name="dateType"></param>
+        /// <param name="charset"></param>
+        /// <returns></returns>
+        protected HttpResponseMessage CallBack(object response, ResponseDateType dateType = ResponseDateType.JSON, string charset = "utf-8")
+        {
+            #region content
+
+            var content = default(string);
+            if (response == null)
+                content = string.Empty;
+            else if (response.GetType().Equals(typeof(string)))
+                content = response.ToString();
+            else
+            {
+                if (ResponseDateType.XML == dateType)
+                    content = XML.Serialize(response);
+                //if (ResponseDateType.JSON == dateType)
+                else
+                    content = JSON.Serialize(response);
+            }
+
+            #endregion content
+
+            #region encoding
+
+            var encoding = Encoding.GetEncoding(charset.ValueOrEmpty("utf-8"));
+
+            #endregion encoding
+
+            #region mediaType
+
+            var mediaType = default(string);
+            if (ResponseDateType.JSON == dateType)
+                mediaType = "application/json";
+            else if (ResponseDateType.XML == dateType)
+                mediaType = "application/xml";
+            else
+                mediaType = "text/plain";
+
+            #endregion mediaType
+
+            var responseMessage = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent(content, encoding, mediaType)
+            };
+
+            return responseMessage;
+        }
+
+        protected enum ResponseDateType
+        {
+            JSON = 0,
+            XML = 1,
+            TEXT = 2
+        }
+
         //private string _ControllerName = string.Empty;
         //private string _ActionName = string.Empty;
 

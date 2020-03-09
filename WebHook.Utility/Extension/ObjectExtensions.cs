@@ -8,52 +8,6 @@ namespace WebHook.Utility.Extension
 {
     public static class ObjectExtensions
     {
-        #region URL编码
-
-        //public static Hashtable UrlEncode(this object obj)
-        //{
-        //    if (obj == null)
-        //        throw new ArgumentNullException("obj");
-
-        //    Hashtable param = JSON.ConvertToType<Hashtable>(obj);
-        //    Hashtable param_new = new Hashtable();
-        //    foreach (string key in param.Keys)
-        //    {
-        //        if (string.IsNullOrWhiteSpace(key))
-        //            continue;
-
-        //        if (null == param[key] || string.IsNullOrWhiteSpace(param[key].ToString()))
-        //            param_new[key] = param[key];
-        //        else
-        //            param_new[key] = System.Web.HttpUtility.UrlEncode(param[key].ToString());
-        //    }
-
-        //    return param_new;
-        //}
-
-        public static Hashtable UrlEscape(this object obj)
-        {
-            if (obj == null)
-                throw new ArgumentNullException("obj");
-
-            Hashtable param = JSON.ConvertToType<Hashtable>(obj);
-            Hashtable param_new = new Hashtable();
-            foreach (string key in param.Keys)
-            {
-                if (string.IsNullOrWhiteSpace(key))
-                    continue;
-
-                if (null == param[key] || string.IsNullOrWhiteSpace(param[key].ToString()))
-                    param_new[key] = param[key];
-                else
-                    param_new[key] = Uri.EscapeDataString(param[key].ToString());
-            }
-
-            return param_new;
-        }
-
-        #endregion URL编码
-
         #region 类型判断
 
         /// <summary>
@@ -180,7 +134,7 @@ namespace WebHook.Utility.Extension
         }
 
         /// <summary>
-        /// 判断是否DateTime且是默认时间
+        /// 判断是否DateTime且是默认时间【1900-01-01 00:00:00】
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
@@ -215,6 +169,206 @@ namespace WebHook.Utility.Extension
 
         #endregion 类型判断
 
+        #region 类型转换
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="defaultvalue">默认值</param>
+        /// <returns></returns>
+        public static bool ToBool(this object value, bool defaultvalue = false)
+        {
+            if (value.IsNullOrWhiteSpace())
+                return defaultvalue;
+
+            bool result;
+            if (bool.TryParse(value.ToString(), out result))
+                return result;
+
+            return defaultvalue;
+        }
+
+        /// <summary>
+        /// 转Int
+        /// (-2147483648, 2147483647)
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="defaultvalue">默认值</param>
+        /// <returns></returns>
+        public static int ToInt32(this object value, int defaultvalue = 0)
+        {
+            if (value.IsNullOrWhiteSpace())
+                return defaultvalue;
+
+            decimal result;
+            if (decimal.TryParse(value.ToString(), out result))
+                return (int)result;
+
+            return defaultvalue;
+        }
+
+        /// <summary>
+        /// 转Long
+        /// (-9223372036854775808, 9223372036854775807)
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="defaultvalue">默认值</param>
+        /// <returns></returns>
+        public static long ToInt64(this object value, long defaultvalue = 0L)
+        {
+            if (value.IsNullOrWhiteSpace())
+                return defaultvalue;
+
+            decimal result;
+            if (decimal.TryParse(value.ToString(), out result))
+                return (long)result;
+
+            return defaultvalue;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="defaultvalue">默认值</param>
+        /// <returns></returns>
+        public static double ToDouble(this object value, double defaultvalue = 0.00)
+        {
+            if (value.IsNullOrWhiteSpace())
+                return defaultvalue;
+
+            double result;
+            if (double.TryParse(value.ToString(), out result))
+                return result;
+
+            return defaultvalue;
+        }
+
+        /// <summary>
+        /// 转Decimal
+        /// (-79228162514264337593543950335, 79228162514264337593543950335)
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="defaultvalue">默认值</param>
+        /// <returns></returns>
+        public static decimal ToDecimal(this object value, decimal defaultvalue = 0.00M)
+        {
+            if (value.IsNullOrWhiteSpace())
+                return defaultvalue;
+
+            decimal result;
+            if (decimal.TryParse(value.ToString(), out result))
+                return result;
+
+            return defaultvalue;
+        }
+
+        /// <summary>
+        /// 转DateTime
+        /// (0001-01-01 00:00:00.000, 9999-12-31 23:59:59.999)
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="format">格式化，如：yyyyMMddHHmmss</param>
+        /// <param name="defaultvalue">默认值</param>
+        /// <returns></returns>
+        public static DateTime ToDateTime(this object value, string format = "", string defaultvalue = "1900-01-01 00:00:00.000")
+        {
+            if (!defaultvalue.IsDateTime())
+                defaultvalue = "1900-01-01 00:00:00.000";
+
+            if (value.IsNullOrWhiteSpace())
+                return DateTime.Parse(defaultvalue);
+
+            DateTime result;
+            if (format.IsNullOrWhiteSpace())
+            {
+                if (DateTime.TryParse(value.ToString(), out result))
+                    return result;
+            }
+            else
+            {
+                try
+                {
+                    result = DateTime.ParseExact(value.ToString(), format, null);
+                    return result;
+                }
+                catch { }
+            }
+
+            return DateTime.Parse(defaultvalue);
+        }
+
+        public static T ToEnum<T>(this object value)
+        {
+            var result = (T)Enum.Parse(typeof(T), value.ValueOrEmpty(), true);
+            return result;
+        }
+
+        public static bool ToTryEnum<T>(this object value, out T result)
+            where T : struct
+        {
+            var success = Enum.TryParse<T>(value.ValueOrEmpty(), true, out result);
+            return success;
+        }
+
+        #endregion 类型转换
+
+        #region 值处理
+
+        /// <summary>
+        /// 半角转全角(SBC case)
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static string ToSBC(this object value)
+        {
+            if (value.IsNullOrWhiteSpace())
+                return string.Empty;
+
+            //半角转全角：
+            var c = value.ToString().ToCharArray();
+            for (int i = 0; i < c.Length; i++)
+            {
+                if (c[i] == 32)
+                {
+                    c[i] = (char)12288;
+                    continue;
+                }
+
+                if (c[i] < 127)
+                    c[i] = (char)(c[i] + 65248);
+            }
+            return new string(c);
+        }
+
+        /// <summary>
+        ///  全角转半角
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static string ToDBC(this object value)
+        {
+            if (value.IsNullOrWhiteSpace())
+                return string.Empty;
+
+            var c = value.ToString().ToCharArray();
+            for (int i = 0; i < c.Length; i++)
+            {
+                if (c[i] == 12288)
+                {
+                    c[i] = (char)32;
+                    continue;
+                }
+
+                if (c[i] > 65280 && c[i] < 65375)
+                    c[i] = (char)(c[i] - 65248);
+            }
+            return new string(c);
+        }
+
+        #endregion 值处理
+
         /// <summary>
         /// 为null时使用string.Empty
         /// obj?.ToString() ?? string.Empty;
@@ -235,7 +389,7 @@ namespace WebHook.Utility.Extension
         /// (obj == null || string.IsNullOrWhiteSpace(obj.ToString())) ? val.ValueOrEmpty() : obj.ToString();
         /// </summary>
         /// <param name="obj"></param>
-        /// <param name="val"></param>
+        /// <param name="val">val.ValueOrEmpty()</param>
         /// <returns></returns>
         public static string ValueOrEmpty(this object obj, string val)
         {
@@ -264,7 +418,7 @@ namespace WebHook.Utility.Extension
                 }
             }
 
-            return obj.ToString(); ;
+            return obj.ToString();
         }
 
         public static Hashtable ToHashtable(this object obj)

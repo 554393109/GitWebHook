@@ -14,10 +14,19 @@ namespace WebHook
             // Web API 路由
             config.MapHttpAttributeRoutes();
 
+            //config.Routes.MapHttpRoute(
+            //    name: "DefaultApi",
+            //    routeTemplate: "{controller}/{id}",
+            //    defaults: new { id = RouteParameter.Optional }
+            //);
+
+            // *********************************************************************************
+
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
+                routeTemplate: "{controller}/{action}",
+                defaults: new { controller = "GitHub", action = "EventNotify" },
+                constraints: new { controller = @"\w+", action = @"\w+" }
             );
         }
     }

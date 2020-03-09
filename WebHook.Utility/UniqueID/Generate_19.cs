@@ -124,19 +124,7 @@ namespace WebHook.Utility.UniqueID
         /// <returns></returns>
         public static string GetReqId(Nullable<DateTime> dt_now = null, string px = "")
         {
-            return string.Format("{0}{1:yyMMddHHmmss}{2}", px, dt_now ?? DateTime.Now, Utility.UniqueID.Generate_19.Generate());
-        }
-
-        /// <summary>
-        /// 生成单号
-        /// {px}{DateTime:yyMMddHHmmss}{UniqueID}
-        /// </summary>
-        /// <param name="dt_now">当前时间</param>
-        /// <param name="px">前缀</param>
-        /// <returns></returns>
-        public static string GetBillNo(Nullable<DateTime> dt_now = null, string px = "")
-        {
-            return string.Format("{0}{1:yyyyMMddHHmmss}{2}", px, dt_now ?? DateTime.Now, Utility.UniqueID.Generate_19.Generate());
+            return string.Format("{0}_{1:yyMMddHHmmss}_{2}", px, dt_now ?? DateTime.Now, Utility.UniqueID.Generate_19.Generate()).Trim('_');
         }
 
 

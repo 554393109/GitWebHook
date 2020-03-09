@@ -37,6 +37,7 @@ namespace WebHook.Utility
             log4net.Config.XmlConfigurator.Configure(configFile);
         }
 
+
         /// <summary>
         /// 错误
         /// </summary>
@@ -45,8 +46,14 @@ namespace WebHook.Utility
         public static void Error(string error)
         {
             if (logerror.IsErrorEnabled)
-                logerror.Error(error);
+            {
+                var mb = new StackTrace().GetFrame(1).GetMethod();
+                var target = string.Format("/{0}/{1}", mb.DeclaringType, mb.Name);
+
+                logerror.Error($"【Target】：【{target}】\r\n{error}");
+            }
         }
+
         /// <summary>
         /// 错误
         /// </summary>
@@ -55,8 +62,14 @@ namespace WebHook.Utility
         public static void Error(Exception ex)
         {
             if (logerror.IsErrorEnabled)
-                logerror.Error(ex.Message, ex);
+            {
+                var mb = new StackTrace().GetFrame(1).GetMethod();
+                var target = string.Format("/{0}/{1}", mb.DeclaringType, mb.Name);
+
+                logerror.Error($"【Target】：【{target}】\r\n{ex.Message}", ex);
+            }
         }
+
         /// <summary>
         /// 错误
         /// </summary>
@@ -65,26 +78,14 @@ namespace WebHook.Utility
         public static void Error(string error, Exception ex)
         {
             if (logerror.IsErrorEnabled)
-                logerror.Error(error, ex);
+            {
+                var mb = new StackTrace().GetFrame(1).GetMethod();
+                var target = string.Format("/{0}/{1}", mb.DeclaringType, mb.Name);
+
+                logerror.Error($"【Target】：【{target}】\r\n{error}", ex);
+            }
         }
-        ///// <summary>
-        ///// 警告
-        ///// </summary>
-        ///// <param name="warn"></param>
-        //public static void Warn(string warn)
-        //{
-        //    if (logwarn.IsWarnEnabled)
-        //        logwarn.Warn(warn);
-        //}
-        ///// <summary>
-        ///// 警告
-        ///// </summary>
-        ///// <param name="warn"></param>
-        //public static void Warn(string warn, Exception ex)
-        //{
-        //    if (logwarn.IsWarnEnabled)
-        //        logwarn.Warn(warn, ex);
-        //}
+
         /// <summary>
         /// 信息
         /// </summary>
@@ -92,8 +93,14 @@ namespace WebHook.Utility
         public static void Info(string info)
         {
             if (loginfo.IsInfoEnabled)
-                loginfo.Info(info);
+            {
+                var mb = new StackTrace().GetFrame(1).GetMethod();
+                var target = string.Format("/{0}/{1}", mb.DeclaringType, mb.Name);
+
+                loginfo.Info($"【Target】：【{target}】\r\n{info}");
+            }
         }
+
         /// <summary>
         /// 信息
         /// </summary>
@@ -102,17 +109,14 @@ namespace WebHook.Utility
         public static void InfoFormat(string format, params object[] args)
         {
             if (loginfo.IsInfoEnabled)
-                loginfo.Info(string.Format(format, args));
+            {
+                var mb = new StackTrace().GetFrame(1).GetMethod();
+                var target = string.Format("/{0}/{1}", mb.DeclaringType, mb.Name);
+
+                loginfo.Info($"【Target】：【{target}】\r\n{string.Format(format, args)}");
+            }
         }
-        /// <summary>
-        /// 信息
-        /// </summary>
-        /// <param name="info"></param>
-        public static void Info(string info, Exception ex)
-        {
-            if (loginfo.IsInfoEnabled)
-                loginfo.Info(info, ex);
-        }
+
         /// <summary>
         /// 调试
         /// </summary>
@@ -120,7 +124,12 @@ namespace WebHook.Utility
         public static void Debug(string debug)
         {
             if (logdebug.IsDebugEnabled)
-                logdebug.Debug(debug);
+            {
+                var mb = new StackTrace().GetFrame(1).GetMethod();
+                var target = string.Format("/{0}/{1}", mb.DeclaringType, mb.Name);
+
+                logdebug.Debug($"【Target】：【{target}】\r\n{debug}");
+            }
         }
     }
 }

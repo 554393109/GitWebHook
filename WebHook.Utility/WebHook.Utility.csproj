@@ -73,6 +73,7 @@
     <Compile Include="Extension\DecimalExtension.cs" />
     <Compile Include="Extension\DictionaryExtension.cs" />
     <Compile Include="Extension\HashtableExtension.cs" />
+    <Compile Include="Extension\HttpExtension.cs" />
     <Compile Include="Extension\IntExtension.cs" />
     <Compile Include="Extension\ListExtension.cs" />
     <Compile Include="Extension\ObjectExtensions.cs" />

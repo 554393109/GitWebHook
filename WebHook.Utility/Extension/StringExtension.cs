@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using WebHook.Utility.Extension;
 
 namespace WebHook.Utility
 {
@@ -79,22 +81,81 @@ namespace WebHook.Utility
             return false;
         }
 
+        /// <summary>
+        /// a.Equals(b)
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <param name="comparisonType"></param>
+        /// <returns></returns>
+        public static bool Same(this string a, string b, StringComparison comparisonType = StringComparison.OrdinalIgnoreCase)
+        {
+            var result = false;
+            try
+            {
+                if ((a == null && b == null)
+                    || a.Equals(b, comparisonType))
+                    result = true;
+            }
+            catch { }
+
+            return result;
+        }
+
+        /// <summary>
+        /// a.IndexOf(b)
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <param name="comparisonType"></param>
+        /// <returns></returns>
+        public static bool Exists(this string a, string b, StringComparison comparisonType = StringComparison.OrdinalIgnoreCase)
+        {
+            var result = false;
+            try
+            {
+                if (a != null
+                    && b != null
+                    && a.IndexOf(b, comparisonType) != -1)
+                    result = true;
+            }
+            catch { }
+
+            return result;
+        }
+
         public static string ToFormat(this string value, params object[] args)
         {
-            if (String.IsNullOrWhiteSpace(value))
+            if (string.IsNullOrWhiteSpace(value))
             {
                 return value;
             }
-            return String.Format(value, args);
+            return string.Format(value, args);
+        }
+
+        public static string ToBase64String(this string value, string charset = "utf-8")
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                return value;
+
+            return Convert.ToBase64String(value.GetBytes(charset));
+        }
+
+        public static string FromBase64String(this string value, string charset = "utf-8")
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                return value;
+
+            return Encoding.GetEncoding(charset).GetString(Convert.FromBase64String(value));
         }
 
         public static string Join(this string[] array, string separator)
         {
             if (array != null || array.Length > 0)
             {
-                return String.Join(separator, array);
+                return string.Join(separator, array);
             }
-            return String.Empty;
+            return string.Empty;
         }
 
         public static string Join<TSource>(this IEnumerable<TSource> source, Func<TSource, string> keySelector, string separator)
@@ -108,22 +169,7 @@ namespace WebHook.Utility
             return result;
         }
 
-        public static bool Contains(this string[] array, string value)
-        {
-            if (array != null && array.Count() > 0)
-            {
-                foreach (string item in array)
-                {
-                    if (item.Equals(value))
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
-        public static bool Contains(this string[] array, string value, StringComparison comparisonType)
+        public static bool Contains(this string[] array, string value, StringComparison comparisonType = StringComparison.OrdinalIgnoreCase)
         {
             if (array != null && array.Count() > 0)
             {
@@ -154,72 +200,6 @@ namespace WebHook.Utility
                 encoding = Encoding.Default;
             }
             return encoding.GetBytes(value).Length;
-        }
-
-        public static int ToInt32(this string value)
-        {
-            return Convert.ToInt32(value);
-        }
-
-        public static long ToInt64(this string value)
-        {
-            return Convert.ToInt64(value);
-        }
-
-        public static bool ToBoolean(this string value)
-        {
-            return Convert.ToBoolean(value);
-        }
-
-        public static T ToEnum<T>(this string value)
-        {
-            var @enum = (T)Enum.Parse(typeof(T), value, true);
-            return @enum;
-        }
-
-
-
-        /// <summary>
-        /// 半角转全角(SBC case)
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public static string ToSBC(this string value)
-        {
-            //半角转全角：
-            char[] c = value.ToCharArray();
-            for (int i = 0; i < c.Length; i++)
-            {
-                if (c[i] == 32)
-                {
-                    c[i] = (char)12288;
-                    continue;
-                }
-                if (c[i] < 127)
-                    c[i] = (char)(c[i] + 65248);
-            }
-            return new string(c);
-        }
-
-        /// <summary>
-        ///  全角转半角
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public static string ToDBC(this string value)
-        {
-            char[] c = value.ToCharArray();
-            for (int i = 0; i < c.Length; i++)
-            {
-                if (c[i] == 12288)
-                {
-                    c[i] = (char)32;
-                    continue;
-                }
-                if (c[i] > 65280 && c[i] < 65375)
-                    c[i] = (char)(c[i] - 65248);
-            }
-            return new string(c);
         }
 
 
@@ -292,6 +272,28 @@ namespace WebHook.Utility
             return new Regex(@"\\u([0-9A-F]{4})", RegexOptions.IgnoreCase | RegexOptions.Compiled).Replace(source, x => string.Empty + Convert.ToChar(Convert.ToUInt16(x.Result("$1"), 16)));
         }
 
+        public static byte[] HexStrToByte(this string source)
+        {
+            source = source.Replace(" ", "");
+            if ((source.Length % 2) != 0)
+                source += " ";
+            byte[] returnBytes = new byte[source.Length / 2];
+            for (int i = 0; i < returnBytes.Length; i++)
+                returnBytes[i] = Convert.ToByte(source.Substring(i * 2, 2), 16);
+            return returnBytes;
+        }
+
+        public static byte[] GetBytes(this string sourece, string charset = "utf-8")
+        {
+            if (null == sourece)
+                return null;
+
+            return Encoding.GetEncoding(charset).GetBytes(sourece);
+        }
+
+
+
+
         /// <summary>
         /// <para>将 URL 中的参数名称/值编码为合法的格式。</para>
         /// <para>可以解决类似这样的问题：假设参数名为 tvshow, 参数值为 Tom&Jerry，如果不编码，可能得到的网址： http://a.com/?tvshow=Tom&Jerry&year=1965 编码后则为：http://a.com/?tvshow=Tom%26Jerry&year=1965 </para>
@@ -315,53 +317,42 @@ namespace WebHook.Utility
             return Uri.UnescapeDataString(source);
         }
 
-        public static byte[] HexStrToByte(this string source)
-        {
-            source = source.Replace(" ", "");
-            if ((source.Length % 2) != 0)
-                source += " ";
-            byte[] returnBytes = new byte[source.Length / 2];
-            for (int i = 0; i < returnBytes.Length; i++)
-                returnBytes[i] = Convert.ToByte(source.Substring(i * 2, 2), 16);
-            return returnBytes;
-        }
 
-        //        /// <summary>
-        //        /// 封装System.Web.HttpUtility.UrlEncode
-        //        /// </summary>
-        //        /// <param name="url"></param>
-        //        /// <returns></returns>
-        //#if DEBUG
-        //        [Obsolete("此方法已过期，建议使用WebHook.Utility.StringExtension.UrlEscape()方法")]
-        //#endif
-        //        public static string UrlEncode(this string url)
-        //        {
-        //            if (url == null)
-        //                return string.Empty;
-
-        //            return System.Web.HttpUtility.UrlEncode(url);
-        //        }
-
-
-        ///// <summary>
-        ///// 封装System.Web.HttpUtility.UrlDecode
-        ///// </summary>
-        ///// <param name="url"></param>
-        ///// <returns></returns>
-        //public static string UrlDecode(this string url)
-        //{
-        //    if (url == null)
-        //        return string.Empty;
-
-        //    return System.Web.HttpUtility.UrlDecode(url);
-        //}
-
+        /// <summary>
+        /// 移除字符串
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="oldValue"></param>
+        /// <returns></returns>
         public static string TrimAny(this string source, string oldValue = " ")
         {
             if (source == null)
                 return null;
 
             return source.Replace(oldValue, string.Empty);
+        }
+
+        /// <summary>
+        /// 移除字符串数组
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="arr_oldValue">为空则替换空格</param>
+        /// <returns></returns>
+        public static string TrimAny(this string source, params string[] arr_oldValue)
+        {
+            if (source == null)
+                return null;
+
+            if (arr_oldValue == null || arr_oldValue.Length == 0)
+                arr_oldValue = new string[1] { " " };
+
+            if (arr_oldValue?.Length > 0)
+            {
+                foreach (string oldValue in arr_oldValue)
+                    source = source.Replace(oldValue, string.Empty);
+            }
+
+            return source;
         }
 
         /// <summary>
@@ -383,6 +374,37 @@ namespace WebHook.Utility
             }
 
             return source;
+        }
+
+        public static Hashtable QueryStringToHashtable(this string sourece, bool NeedUrlDecode = true)
+        {
+            var hash = new Hashtable();
+            if (!sourece.IsNullOrWhiteSpace())
+            {
+                var list_item = sourece
+                    .Trim()
+                    .Trim('?')
+                    .Trim('&')
+                    .GetArray("&").ToList();
+
+                foreach (var item in list_item)
+                {
+                    if (item.IsNullOrWhiteSpace())
+                        continue;
+
+                    var k_v = item.Split(new char[] { '=' }, count: 2, options: StringSplitOptions.None).ToList();
+                    if (k_v.Count == 1)
+                        k_v.Add(string.Empty);
+
+                    if (k_v[0].IsNullOrWhiteSpace())
+                        continue;
+
+                    hash[k_v[0]] = NeedUrlDecode
+                        ? k_v[1].ValueOrEmpty().UrlUnescape()
+                        : k_v[1].ValueOrEmpty();
+                }
+            }
+            return hash;
         }
     }
 }

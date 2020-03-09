@@ -58,6 +58,7 @@
 using System;
 using System.Security.Cryptography;
 using System.Text;
+using WebHook.Utility.Extension;
 
 namespace WebHook.Utility.DEncrypt
 {

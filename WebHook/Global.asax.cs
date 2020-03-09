@@ -21,6 +21,8 @@ namespace WebHook
 
             InitDirectory(GlobalConfiguration.Configuration);
 
+            GlobalConfiguration.Configuration.Formatters.XmlFormatter.SupportedMediaTypes.Clear();
+
             LogHelper.Info("Application_Start");
         }
 
