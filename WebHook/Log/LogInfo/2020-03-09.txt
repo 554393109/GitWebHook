@@ -73,3 +73,9 @@ Application_Start
 2020-03-09 16:38:04,433 - 【Target】：【/WebHook.Controllers.Filters.InvokeActionFilter/OnActionExecuted】
 【响应报文】：【{"IP":"127.0.0.1","ReqId":"200309163803_3757488556554059776","ContentLength":"2","ContextContent":"{}","UserAgent":"Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36","ControllerName":"GitHub","Scheme":"http","Duration":"717","HttpMethod":"GET","Target":"GitHub/EventNotify","rq_Invoke":"2020-03-09 16:38:04.380","Authority":"127.0.0.1:50000","ContextType":"1"}】
 
+2020-03-09 16:39:52,410 - 【Target】：【/WebHook.Controllers.Filters.InvokeActionFilter/OnActionExecuting】
+【请求报文】：【{"IP":"192.168.1.99","ReqId":"200309163952_3757489012445544448","ContentLength":"17","ContextContent":"{\"QueryString\":{\"q1\":\"1\",\"q2\":\"22\"},\"Form\":{},\"Body\":{\"b\":22,\"a\":\"11\"}}","UserAgent":"PostmanRuntime/7.22.0","ControllerName":"GitHub","Scheme":"http","Duration":"0","HttpMethod":"GET","Target":"GitHub/EventNotify","rq_Invoke":"2020-03-09 16:39:52.357","Authority":"yin554393109.gicp.net:50000","ContextType":"0"}】
+
+2020-03-09 16:39:52,412 - 【Target】：【/WebHook.Controllers.Filters.InvokeActionFilter/OnActionExecuted】
+【响应报文】：【{"IP":"192.168.1.99","ReqId":"200309163952_3757489012445544448","ContentLength":"17","ContextContent":"{\"b\":22,\"a\":\"11\"}","UserAgent":"PostmanRuntime/7.22.0","ControllerName":"GitHub","Scheme":"http","Duration":"55","HttpMethod":"GET","Target":"GitHub/EventNotify","rq_Invoke":"2020-03-09 16:39:52.412","Authority":"yin554393109.gicp.net:50000","ContextType":"1"}】
+
