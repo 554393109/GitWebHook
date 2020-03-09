@@ -3,15 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29424.173
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YZQ.Entities", "YZQ.Entities\YZQ.Entities.csproj", "{FCF6D602-E371-4401-B62C-E3676EB80718}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebHook.Entities", "WebHook.Entities\WebHook.Entities.csproj", "{FCF6D602-E371-4401-B62C-E3676EB80718}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YZQ.Utility", "YZQ.Utility\YZQ.Utility.csproj", "{624F8BC2-1DC8-4AE0-B635-6159A64404A4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebHook.Utility", "WebHook.Utility\WebHook.Utility.csproj", "{624F8BC2-1DC8-4AE0-B635-6159A64404A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Web.csproj", "{3C1B9C7E-99CE-4A0D-BC04-96B07A7556EB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YZQ.Controllers", "YZQ.Controllers\YZQ.Controllers.csproj", "{7D91E7C7-F9AE-4DCD-997D-E762C6DB869A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web2", "Web2\Web2.csproj", "{C0DB07B1-8167-4B77-A6D0-6363B12F9D39}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebHook", "WebHook\WebHook.csproj", "{8B814079-F8F3-43A2-81C6-840D1007C720}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,18 +23,10 @@ Global
 		{624F8BC2-1DC8-4AE0-B635-6159A64404A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{624F8BC2-1DC8-4AE0-B635-6159A64404A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{624F8BC2-1DC8-4AE0-B635-6159A64404A4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3C1B9C7E-99CE-4A0D-BC04-96B07A7556EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3C1B9C7E-99CE-4A0D-BC04-96B07A7556EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3C1B9C7E-99CE-4A0D-BC04-96B07A7556EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3C1B9C7E-99CE-4A0D-BC04-96B07A7556EB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7D91E7C7-F9AE-4DCD-997D-E762C6DB869A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7D91E7C7-F9AE-4DCD-997D-E762C6DB869A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7D91E7C7-F9AE-4DCD-997D-E762C6DB869A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7D91E7C7-F9AE-4DCD-997D-E762C6DB869A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C0DB07B1-8167-4B77-A6D0-6363B12F9D39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C0DB07B1-8167-4B77-A6D0-6363B12F9D39}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C0DB07B1-8167-4B77-A6D0-6363B12F9D39}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C0DB07B1-8167-4B77-A6D0-6363B12F9D39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B814079-F8F3-43A2-81C6-840D1007C720}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B814079-F8F3-43A2-81C6-840D1007C720}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B814079-F8F3-43A2-81C6-840D1007C720}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B814079-F8F3-43A2-81C6-840D1007C720}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
